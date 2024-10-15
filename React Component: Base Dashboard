@@ -1,0 +1,107 @@
+import React, { useState } from 'react';
+import { Menu, X, Home, User, Settings, LogOut } from 'lucide-react';
+
+const BaseNavItem = ({ Icon, text, active, onClick }) => (
+  <a
+    href="#"
+    onClick={onClick}
+    className={`flex items-center p-2 text-base font-normal rounded-lg ${
+      active ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-700'
+    }`}
+  >
+    <Icon className="w-6 h-6 transition duration-75" />
+    <span className="ml-3">{text}</span>
+  </a>
+);
+
+const BaseDashboard = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeNavItem, setActiveNavItem] = useState('Dashboard');
+
+  const navItems = [
+    { Icon: Home, text: 'Dashboard' },
+    { Icon: User, text: 'Profile' },
+    { Icon: Settings, text: 'Settings' },
+  ];
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <aside
+        className={`${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } fixed top-0 left-0 z-40 w-64 h-screen transition-transform sm:translate-x-0`}
+        aria-label="Sidebar"
+      >
+        <div className="h-full px-3 py-4 overflow-y-auto bg-white border-r border-gray-200">
+          <a href="#" className="flex items-center pl-2.5 mb-5">
+            <span className="self-center text-xl font-semibold whitespace-nowrap text-blue-700">
+              Your App Name
+            </span>
+          </a>
+          <ul className="space-y-2">
+            {navItems.map((item) => (
+              <li key={item.text}>
+                <BaseNavItem
+                  {...item}
+                  active={activeNavItem === item.text}
+                  onClick={() => setActiveNavItem(item.text)}
+                />
+              </li>
+            ))}
+          </ul>
+          <ul className="pt-4 mt-4 space-y-2 border-t border-gray-200">
+            <li>
+              <a
+                href="#"
+                className="flex items-center p-2 text-base font-normal text-gray-600 rounded-lg hover:bg-blue-50 hover:text-blue-700"
+              >
+                <LogOut className="w-6 h-6 transition duration-75" />
+                <span className="ml-3">Log Out</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col sm:ml-64">
+        {/* Header */}
+        <header className="bg-white shadow">
+          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <h1 className="text-3xl font-bold text-gray-900">{activeNavItem}</h1>
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              type="button"
+              className="sm:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+            >
+              <span className="sr-only">Open sidebar</span>
+              {sidebarOpen ? (
+                <X className="block h-6 w-6" aria-hidden="true" />
+              ) : (
+                <Menu className="block h-6 w-6" aria-hidden="true" />
+              )}
+            </button>
+          </div>
+        </header>
+
+        {/* Main content area */}
+        <main className="flex-1 overflow-y-auto p-6">
+          <div className="max-w-7xl mx-auto">
+            {/* Example content - replace with your actual dashboard content */}
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="p-6">
+                <h2 className="text-lg font-medium text-gray-900">Welcome to Your Dashboard</h2>
+                <p className="mt-1 text-sm text-gray-500">
+                  This is a sample dashboard layout. Replace this content with your actual dashboard components and data.
+                </p>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default BaseDashboard;
